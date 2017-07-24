@@ -1,3 +1,4 @@
+import { provideRoutes } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -10,7 +11,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { GettingStartedComponent } from './getting-started/getting-started.component';
 
-import { LibModule } from 'ngx-lazy-view';
+import { NgxLazyViewModule } from 'ngx-lazy-view';
+
+const ngxLazyLoadableComponents = [
+];
 
 @NgModule({
     declarations: [
@@ -24,9 +28,16 @@ import { LibModule } from 'ngx-lazy-view';
         HttpModule,
         AppRoutingModule,
         AppSharedModule,
-        LibModule.forRoot()
+        NgxLazyViewModule
     ],
-    providers: [],
+    providers: [
+        provideRoutes([
+            { 
+                path: 'lazy-component-1', 
+                loadChildren: './lazy-component-1/lazy-component-1.module#LazyComponent1Module' 
+            }
+        ])
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

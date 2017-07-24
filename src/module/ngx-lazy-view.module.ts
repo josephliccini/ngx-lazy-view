@@ -17,5 +17,5 @@ export { NgxLazyViewComponent } from './component/ngx-lazy-view.component';
     NgxLazyViewComponent
   ]
 })
-export class NgxLazyModule {
+export class NgxLazyViewModule {
 }

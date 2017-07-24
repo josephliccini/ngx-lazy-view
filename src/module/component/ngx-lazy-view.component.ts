@@ -1,4 +1,14 @@
-import { Component, Input, NgModuleFactoryLoader, Injector, ViewContainerRef, OnDestroy } from '@angular/core';
+import {
+  ContentChild,
+  Component,
+  Input,
+  NgModuleFactoryLoader,
+  NgModuleFactory,
+  Injector,
+  ViewContainerRef,
+  OnDestroy,
+  ElementRef
+} from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,6 +22,8 @@ import { NGX_LAZY_LOAD_ENTRY_POINT } from '../lazy-entry-point.injection-token';
   templateUrl: './ngx-lazy-view.component.html'
 })
 export class NgxLazyViewComponent implements OnDestroy {
+
+  public loaded = false;
 
   private moduleLoadSubscription: Subscription;
 
@@ -27,20 +39,26 @@ export class NgxLazyViewComponent implements OnDestroy {
       return;
     }
 
-    // Clear old Module Load Subscription
+    this.loaded = false;
+
     if (this.moduleLoadSubscription) {
       this.moduleLoadSubscription.unsubscribe();
     }
 
     const moduleLoaderObservable$ = Observable.fromPromise(this.moduleLoader.load(value));
 
-    this.moduleLoadSubscription = moduleLoaderObservable$.subscribe((ngModuleFactory) => {
+    this.moduleLoadSubscription = moduleLoaderObservable$.subscribe((ngModuleFactory: NgModuleFactory<any>) => {
       const ngModule = ngModuleFactory.create(this.injector);
-      const entryComponentType = this.injector.get(NGX_LAZY_LOAD_ENTRY_POINT);
-      const componentFactory = ngModule.componentFactoryResolver.resolveComponentFactory(entryComponentType);
-      // this.viewRef.clear();
+      const entryComponentType = ngModule.injector.get(NGX_LAZY_LOAD_ENTRY_POINT);
+      const componentFactory = ngModule.componentFactoryResolver.resolveComponentFactory(entryComponentType as any);
+
+      this.viewRef.clear();
+
       this.viewRef.createComponent(componentFactory);
-      // this.moduleLoadSubscription.unsubscribe();
+
+      this.loaded = true;
+
+      this.moduleLoadSubscription.unsubscribe();
     });
   }
 

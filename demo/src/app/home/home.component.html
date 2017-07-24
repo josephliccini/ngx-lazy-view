@@ -23,7 +23,9 @@
   <div class="container">
 		<!-- put your content here-->
 		<p>Put your content here. Typically, examples of your library in action (directives, components...)</p>
-		<ngx-lazy-component></ngx-lazy-component>
+		<ngx-lazy-view [loadChildrenString]="testLoadChildrenString">
+			I am loading!
+		</ngx-lazy-view>
 		<p>Happy ng-hacking!</p>
   </div>
 </section>
