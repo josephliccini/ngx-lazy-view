@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       // const flattenedRoutes = [ ...this.loadableRoutes ];
       // console.log(flattenedRoutes);
-      this.testLoadChildrenString = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy1');
+      this.testLoadChildrenString = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-1');
       // this.testLoadChildrenString = ngxLazyLoadableComponents[0].loadChildren;
     }, 6000);
   }

@@ -1,6 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { ROUTES, Routes } from '@angular/router';
 
+const NGX_LAZY_VIEW_PATH_PREFIX = 'ngx-lazy-view-';
+
 @Injectable()
 export class NgxLazyService {
     constructor(
@@ -16,7 +18,7 @@ export class NgxLazyService {
                 if (route.path === path &&
                     typeof route.path === 'string' &&
                     typeof route.loadChildren === 'string' &&
-                    route.path.indexOf('ngx-lazy-view-') === 0) {
+                    route.path.indexOf(NGX_LAZY_VIEW_PATH_PREFIX) === 0) {
                     return route.loadChildren;
                 }
             }

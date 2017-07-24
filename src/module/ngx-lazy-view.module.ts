@@ -22,7 +22,7 @@ export { NgxLazyService } from './service/ngx-lazy.service';
 export class NgxLazyViewModule {
   static forRoot(): ModuleWithProviders {
     return {
-    ngModule: NgxLazyViewModule,
+      ngModule: NgxLazyViewModule,
       providers: [
         NgxLazyService
       ]
