@@ -30,7 +30,7 @@ import { NgxLazyViewModule } from 'ngx-lazy-view';
     providers: [
         provideRoutes([
             { 
-                path: 'lazy-component-1', 
+                path: 'ngx-lazy-view-lazy-component-1', 
                 loadChildren: './lazy-component-1/lazy-component-1.module#LazyComponent1Module' 
             }
         ])

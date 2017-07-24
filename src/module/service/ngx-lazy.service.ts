@@ -8,14 +8,15 @@ export class NgxLazyService {
     ) {
     }
 
-    public getLazyView(path: string): string {
+    public getLoadChildrenPath(path: string): string {
         for (let i = 0; i < this.loadableRoutes.length; ++i) {
             const routeList = this.loadableRoutes[i];
             for (let j = 0; j < routeList.length; ++j) {
                 const route = routeList[j];
                 if (route.path === path &&
+                    typeof route.path === 'string' &&
                     typeof route.loadChildren === 'string' &&
-                    route.loadChildren.indexOf('ngx-lazy-view-') === 0) {
+                    route.path.indexOf('ngx-lazy-view-') === 0) {
                     return route.loadChildren;
                 }
             }
