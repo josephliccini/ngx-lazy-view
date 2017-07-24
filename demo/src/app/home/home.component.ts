@@ -1,6 +1,6 @@
 import { Inject, Component, OnInit } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
-import { ROUTES, Route } from '@angular/router';
+import { ROUTES, Route, LoadChildren } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +8,11 @@ import { ROUTES, Route } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  public testLoadChildrenString: any;
+  public testLoadChildrenString: string;
 
   constructor(
-    private titleService:Title,
-    @Inject(ROUTES) private loadableRoutes: Route[][]
+    private readonly titleService:Title,
+    private readonly ngxLazyService: NgxLazyService
   ) { }
 
   ngOnInit() {
@@ -22,7 +21,7 @@ export class HomeComponent implements OnInit {
     setTimeout(() => {
       // const flattenedRoutes = [ ...this.loadableRoutes ];
       // console.log(flattenedRoutes);
-      this.testLoadChildrenString = this.loadableRoutes[1][0].loadChildren;
+      this.testLoadChildrenString = this.ngxLazyService.getLoadChildren('lazy1');
       // this.testLoadChildrenString = ngxLazyLoadableComponents[0].loadChildren;
     }, 6000);
   }

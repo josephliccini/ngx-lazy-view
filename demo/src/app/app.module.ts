@@ -13,9 +13,6 @@ import { GettingStartedComponent } from './getting-started/getting-started.compo
 
 import { NgxLazyViewModule } from 'ngx-lazy-view';
 
-const ngxLazyLoadableComponents = [
-];
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -28,7 +25,7 @@ const ngxLazyLoadableComponents = [
         HttpModule,
         AppRoutingModule,
         AppSharedModule,
-        NgxLazyViewModule
+        NgxLazyViewModule.forRoot()
     ],
     providers: [
         provideRoutes([

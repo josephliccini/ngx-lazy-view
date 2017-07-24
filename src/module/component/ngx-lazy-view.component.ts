@@ -13,9 +13,9 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import 'rxjs/add/observable/fromPromise';
-
 import { NGX_LAZY_LOAD_ENTRY_POINT } from '../lazy-entry-point.injection-token';
+
+import 'rxjs/add/observable/fromPromise';
 
 @Component({
   selector: 'ngx-lazy-view',
