@@ -8,7 +8,7 @@ export class NgxLazyService {
     ) {
     }
 
-    public getLoadChildrenPath(path: string): string {
+    public getLoadChildrenString(path: string): string {
         for (let i = 0; i < this.loadableRoutes.length; ++i) {
             const routeList = this.loadableRoutes[i];
             for (let j = 0; j < routeList.length; ++j) {

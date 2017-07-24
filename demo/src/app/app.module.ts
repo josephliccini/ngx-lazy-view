@@ -35,6 +35,8 @@ import { NgxLazyViewModule } from 'ngx-lazy-view';
             }
         ])
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [
+        AppComponent
+    ]
 })
 export class AppModule { }
