@@ -1,0 +1,27 @@
+{
+  "generator-ngx-library": {
+    "authorName": "Joseph Liccini",
+    "authorEmail": "joseph.liccini@outlook.com",
+    "githubUsername": "josephliccini",
+    "projectName": "ngx-lazy-view",
+    "projectVersion": "0.0.1",
+    "projectDescription": "Angular Lazy Load without using routes",
+    "projectKeywords": [
+      "ng",
+      "angular",
+      "lazy"
+    ],
+    "ngPrefix": "ngx-lazy",
+    "ngVersion": "4.0.0",
+    "ngModules": [
+      "core",
+      "common",
+      "compiler",
+      "router",
+      "platform-browser-dynamic",
+      "platform-browser"
+    ],
+    "useGreenkeeper": true,
+    "useCompodoc": true
+  }
+}
