@@ -10,22 +10,30 @@ import { NgxLazyService } from 'ngx-lazy-view';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public testLoadChildrenString: string;
+  public loadLazyComponent1: string;
+  public loadLazyComponent2: string;
+
+  public lazy2Message: string = 'Waiting for Lazy 1 to finish rendering';
 
   constructor(
     private readonly titleService:Title,
     private readonly ngxLazyService: NgxLazyService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.titleService.setTitle('Home | ngx-lazy-view');
 
     setTimeout(() => {
-      // const flattenedRoutes = [ ...this.loadableRoutes ];
-      // console.log(flattenedRoutes);
-      this.testLoadChildrenString = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-1');
-      // this.testLoadChildrenString = ngxLazyLoadableComponents[0].loadChildren;
-    }, 6000);
+      this.loadLazyComponent1 = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-1');
+    }, 3000);
+
+  }
+
+  public beginLoadingLazy2() {
+    this.lazy2Message = 'Just 2 more seconds!';
+    setTimeout(() => {
+      this.loadLazyComponent2 = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-2');
+    }, 2000);
   }
 
 }

@@ -7,7 +7,9 @@ import {
   Injector,
   ViewContainerRef,
   OnDestroy,
-  ElementRef
+  ElementRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -23,7 +25,9 @@ import 'rxjs/add/observable/fromPromise';
 })
 export class NgxLazyViewComponent implements OnDestroy {
 
-  public loaded = false;
+  @Output() public loaded = new EventEmitter<void>();
+
+  public hasLoaded = false;
 
   private moduleLoadSubscription: Subscription;
 
@@ -39,7 +43,7 @@ export class NgxLazyViewComponent implements OnDestroy {
       return;
     }
 
-    this.loaded = false;
+    this.hasLoaded = false;
 
     if (this.moduleLoadSubscription) {
       this.moduleLoadSubscription.unsubscribe();
@@ -56,7 +60,9 @@ export class NgxLazyViewComponent implements OnDestroy {
 
       this.viewRef.createComponent(componentFactory);
 
-      this.loaded = true;
+      this.hasLoaded = true;
+
+      this.loaded.emit();
 
       this.moduleLoadSubscription.unsubscribe();
     });

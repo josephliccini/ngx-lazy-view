@@ -11,8 +11,7 @@
 				<p class="buttons">
 					<a class="btn btn-outline-primary btn-lg" href="https://github.com/josephliccini/ngx-lazy-view" target="_blank"><i class="fa fa-github fa-lg"></i>  Code on Github</a>
 					<a class="btn btn-outline-primary btn-lg" href="doc/index.html" target="_blank"><i class="fa fa-book fa-lg"></i>  Documentation</a>
-        </p>
-
+				</p>
 			</div>
 		</div>
 
@@ -21,11 +20,14 @@
 
 <section class="home">
   <div class="container">
-		<!-- put your content here-->
-		<p>Put your content here. Typically, examples of your library in action (directives, components...)</p>
-		<ngx-lazy-view [loadChildrenString]="testLoadChildrenString">
-			I am loading!
-		</ngx-lazy-view>
-		<p>Happy ng-hacking!</p>
+
+	<ngx-lazy-view [loadChildrenString]="loadLazyComponent1" (loaded)="beginLoadingLazy2()">
+		<p>Wait 3 seconds and this will fetch a bundle and render the view!</p>
+	</ngx-lazy-view>
+
+	<ngx-lazy-view [loadChildrenString]="loadLazyComponent2">
+		{{ lazy2Message }}
+	</ngx-lazy-view>
+
   </div>
 </section>

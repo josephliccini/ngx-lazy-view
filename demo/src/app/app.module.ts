@@ -32,6 +32,10 @@ import { NgxLazyViewModule } from 'ngx-lazy-view';
             { 
                 path: 'ngx-lazy-view-lazy-component-1', 
                 loadChildren: './lazy-component-1/lazy-component-1.module#LazyComponent1Module' 
+            },
+            { 
+                path: 'ngx-lazy-view-lazy-component-2', 
+                loadChildren: './lazy-component-2/lazy-component-2.module#LazyComponent2Module' 
             }
         ])
     ],
