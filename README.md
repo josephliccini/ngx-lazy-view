@@ -32,18 +32,8 @@ map: {
 }
 ```
 
-Also, when `SystemJS`, one might have to use the `SystemJsNgModuleLoader`:
-```js
-@NgModule({
-  ...
-  providers: [
-    { provide: NgModuleFactoryLoader, useClass: SystemJsNgModuleLoader }
-  ]
-})
+> **Note** This hasn't been tested thoroughly in SystemJS.  It's mainly tested in the `@angular/cli` which is `webpack` based.
 
-```
-
-This hasn't been tested thoroughly in SystemJS.  It's mainly tested in the `@angular/cli` which is `webpack` based.
 ---
 
 Once installed you need to import the main module:
@@ -63,6 +53,9 @@ import { NgxLazyViewModule } from 'ngx-lazy-view';
     NgxLazyViewModule.forRoot(), 
     ...
   ],  
+  providers: [
+    { provide: NgModuleFactoryLoader, useClass: SystemJsNgModuleLoader } // This is *REQUIRED* if your app does not use the RouterModule.forRoot()
+  ],
   bootstrap: [
     AppComponent
   ]
@@ -110,6 +103,7 @@ import { NgxLazyViewModule, NGX_LAZY_VIEW_PATH_PREFIX } from 'ngx-lazy-view';
     ...
   ],  
   providers: [
+    { provide: NgModuleFactoryLoader, useClass: SystemJsNgModuleLoader }, // This is *REQUIRED* if your app does not use the RouterModule.forRoot()
     provideRoutes([
       {
         path: `${NGX_LAZY_VIEW_PATH_PREFIX}LOOKUPKEY`,
@@ -210,6 +204,8 @@ The component also provides a notification once the lazy component is rendered:
 - TODO: Document `NgxLazyViewService`
 - TODO: Update website with example
 - TODO: Fix JiT Compilation (right now it only works with `@angular/cli` and AoT compilation)
+- TODO: figure out a way to sync inputs and outputs of the lazy components
+- TODO: What if a lazy component could provide more routes?
 
 ## License
 
