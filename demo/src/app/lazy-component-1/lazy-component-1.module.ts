@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { LazyComponent1 } from './lazy-component-1.component';
 
-import { NGX_LAZY_LOAD_ENTRY_POINT } from 'ngx-lazy-view';
+import { NGX_LAZY_VIEW_ENTRY_POINT } from 'ngx-lazy-view';
 
 @NgModule({
     declarations: [
@@ -12,7 +12,7 @@ import { NGX_LAZY_LOAD_ENTRY_POINT } from 'ngx-lazy-view';
         LazyComponent1
     ],
     providers: [
-        { provide: NGX_LAZY_LOAD_ENTRY_POINT, useValue: LazyComponent1 }
+        { provide: NGX_LAZY_VIEW_ENTRY_POINT, useValue: LazyComponent1 }
     ]
 })
 export class LazyComponent1Module {

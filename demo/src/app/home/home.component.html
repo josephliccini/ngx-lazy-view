@@ -21,12 +21,11 @@
 <section class="home">
   <div class="container">
 
-	<ngx-lazy-view [loadChildrenString]="loadLazyComponent1" (loaded)="beginLoadingLazy2()">
+	<ngx-lazy-view [lookupKey]="lazyComponent1ModuleLookupKey" (loaded)="beginLoadingLazy2()">
 		<p>Wait 3 seconds and this will fetch a bundle and render the view!</p>
 	</ngx-lazy-view>
 
-	<ngx-lazy-view [loadChildrenString]="loadLazyComponent2">
-		{{ lazy2Message }}
+	<ngx-lazy-view lookupKey="LazyModule2" *ngIf="renderLazyModule2">
 	</ngx-lazy-view>
 
   </div>

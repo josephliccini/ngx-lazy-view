@@ -1,7 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { ROUTES, Routes } from '@angular/router';
-
-const NGX_LAZY_VIEW_PATH_PREFIX = 'ngx-lazy-view-';
+import { NGX_LAZY_VIEW_PATH_PREFIX } from '../ngx-lazy-view-path-prefix.constant';
 
 @Injectable()
 export class NgxLazyService {

@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { GettingStartedComponent } from './getting-started/getting-started.component';
 
-import { NgxLazyViewModule } from 'ngx-lazy-view';
+import { NgxLazyViewModule, NGX_LAZY_VIEW_PATH_PREFIX } from 'ngx-lazy-view';
 
 @NgModule({
     declarations: [
@@ -30,11 +30,11 @@ import { NgxLazyViewModule } from 'ngx-lazy-view';
     providers: [
         provideRoutes([
             { 
-                path: 'ngx-lazy-view-lazy-component-1', 
+                path: `${NGX_LAZY_VIEW_PATH_PREFIX}LazyModule1`, 
                 loadChildren: './lazy-component-1/lazy-component-1.module#LazyComponent1Module' 
             },
             { 
-                path: 'ngx-lazy-view-lazy-component-2', 
+                path: `${NGX_LAZY_VIEW_PATH_PREFIX}LazyModule2`, 
                 loadChildren: './lazy-component-2/lazy-component-2.module#LazyComponent2Module' 
             }
         ])

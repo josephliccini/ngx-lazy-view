@@ -2,37 +2,32 @@ import { Inject, Component, OnInit } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 import { ROUTES, Route, LoadChildren } from '@angular/router';
 
-import { NgxLazyService } from 'ngx-lazy-view';
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public loadLazyComponent1: string;
-  public loadLazyComponent2: string;
-
-  public lazy2Message: string = 'Waiting for Lazy 1 to finish rendering';
+  public lazyComponent1ModuleLookupKey: string;
+  public renderLazyModule2 = false;
 
   constructor(
-    private readonly titleService:Title,
-    private readonly ngxLazyService: NgxLazyService
+    private readonly titleService:Title
   ) { }
 
   public ngOnInit() {
     this.titleService.setTitle('Home | ngx-lazy-view');
 
+    // Set 'lookupKey' later approach
     setTimeout(() => {
-      this.loadLazyComponent1 = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-1');
+      this.lazyComponent1ModuleLookupKey = 'LazyModule1';
     }, 3000);
-
   }
 
   public beginLoadingLazy2() {
-    this.lazy2Message = 'Just 2 more seconds!';
+    // Use *ngIf approach
     setTimeout(() => {
-      this.loadLazyComponent2 = this.ngxLazyService.getLoadChildrenString('ngx-lazy-view-lazy-component-2');
+      this.renderLazyModule2 = true;
     }, 2000);
   }
 

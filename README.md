@@ -9,10 +9,10 @@
 
 ## Demo
 
-View all the directives in action at https://josephliccini.github.io/ngx-lazy-view
+View it in action at https://josephliccini.github.io/ngx-lazy-view
 
 ## Dependencies
-* [Angular](https://angular.io) (*requires* Angular 2 or higher, tested with 2.0.0)
+* [Angular](https://angular.io) (*requires* Angular 4 or higher, tested with 4.1.3)
 
 ## Installation
 Install above dependencies via *npm*. 
@@ -31,42 +31,185 @@ map: {
   'ngx-lazy-view': 'node_modules/ngx-lazy-view/bundles/ngx-lazy-view.umd.js',
 }
 ```
+
+Also, when `SystemJS`, one might have to use the `SystemJsNgModuleLoader`:
+```js
+@NgModule({
+  ...
+  providers: [
+    { provide: NgModuleFactoryLoader, useClass: SystemJsNgModuleLoader }
+  ]
+})
+
+```
+
+This hasn't been tested thoroughly in SystemJS.  It's mainly tested in the `@angular/cli` which is `webpack` based.
 ---
 
 Once installed you need to import the main module:
 ```js
-import { LibModule } from 'ngx-lazy-view';
+import { NgxLazyViewModule } from 'ngx-lazy-view';
 ```
-The only remaining part is to list the imported module in your application module. The exact method will be slightly
-different for the root (top-level) module for which you should end up with the code similar to (notice ` LibModule .forRoot()`):
+Next, list the imported module in your application module:
 ```js
-import { LibModule } from 'ngx-lazy-view';
+import { NgxLazyViewModule } from 'ngx-lazy-view';
 
 @NgModule({
-  declarations: [AppComponent, ...],
-  imports: [LibModule.forRoot(), ...],  
-  bootstrap: [AppComponent]
+  declarations: [
+    AppComponent, 
+    ...
+  ],
+  imports: [
+    NgxLazyViewModule.forRoot(), 
+    ...
+  ],  
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule {
 }
 ```
 
-Other modules in your application can simply import ` LibModule `:
+Other modules in your application can simply import ` NgxLazyViewModule `:
 
 ```js
-import { LibModule } from 'ngx-lazy-view';
+import { NgxLazyViewModule } from 'ngx-lazy-view';
 
 @NgModule({
-  declarations: [OtherComponent, ...],
-  imports: [LibModule, ...], 
+  declarations: [
+    OtherComponent, 
+    ...
+  ],
+  imports: [
+    NgxLazyViewModule, 
+    ...
+  ], 
 })
 export class OtherModule {
 }
 ```
+This enables the use of `<ngx-lazy-view>` directive in `OtherModule`'s component's.
 
 ## Usage
 
+Once the module are all set up, the next step is to provide some configuration in the `AppModule` and `LazyModules` to let the CLI perform code splitting, and to let the library detect your lazy modules.
 
+In the `AppModule`
+```js
+import { provideRoutes } from '@angular/router';
+import { NgxLazyViewModule, NGX_LAZY_VIEW_PATH_PREFIX } from 'ngx-lazy-view';
+
+@NgModule({
+  declarations: [
+    AppComponent, 
+    ...
+  ],
+  imports: [
+    NgxLazyViewModule.forRoot(), 
+    ...
+  ],  
+  providers: [
+    provideRoutes([
+      {
+        path: `${NGX_LAZY_VIEW_PATH_PREFIX}LOOKUPKEY`,
+        loadChildren: '/path/to/lazy.module#LazyModule'
+      },
+      {
+        path: `${NGX_LAZY_VIEW_PATH_PREFIX}LOOKUPKEY2`,
+        loadChildren: '/path/to/lazy.module#AnotherLazyModule'
+      }
+    ])
+  ],
+  bootstrap: [
+    AppComponent
+  ]
+})
+export class AppModule {
+}
+```
+
+*the values for the `path` field are _very_ important.*
+
+The `path` _must_ start with `ngx-lazy-view-`, otherwise at runtime, it won't be able to find your lazy routes.
+
+the value for `LOOKUPKEY` and `LOOKUPKEY2` can be anything you like, though I have a preference for:
+`LOOKUPKEY`: `LazyModule`,
+`LOOKUPKEY2`: `AnotherLazyModule`
+but you can use anything you like.
+
+the next step is to go into `LazyModule`, and add an 'entry point'.
+
+```js
+
+import { NgxLazyViewModule, NGX_LAZY_VIEW_ENTRY_POINT } from 'ngx-lazy-view';
+
+@NgModule({
+  declarations: [
+    LazyComponent
+  ],
+  imports: [
+    NgxLazyViewModule
+  ],  
+  providers: [
+    { provide: NGX_LAZY_VIEW_ENTRY_POINT, useValue: LazyComponent }
+  ]
+})
+export class LazyModule {
+}
+```
+*Note that it must be `useValue` and NOT `useClass`*
+
+Marking the component as the entry point is telling `ngx-lazy-view` to load that component and render that once the module is resolved.
+
+The final step is to use the `<ngx-lazy-view>` component somewhere in your app.
+
+`app.component.html`
+```html
+<h1>Lazy Load!</h1>
+<ngx-lazy-view lookupKey="LazyModule"></ngx-lazy-view>
+```
+
+what's convenient about this is one can do some lazy load based on `*ngIf`:
+
+`app.component.html`
+```html
+<h1>Lazy Load!</h1>
+<!-- Will only fetch LazyModule if the shouldShowFeature is true -->
+<ngx-lazy-view *ngIf="shouldShowFeature" lookupKey="LazyModule"></ngx-lazy-view>
+```
+
+This is good if you are A/B testing an experience, but don't want to ship both experiences to all clients, or if you want to lazy load an experience that isn't within a `<router-outlet></router-outlet>`
+
+One can also provide a placeholder experience while the module is loading.  The placeholder element should be a made a child of the `<ngx-lazy-view>`, and one just has to defer setting the value of `lookupKey`.  
+`app.component.html`
+```html
+<h1>Lazy Load!</h1>
+<ngx-lazy-view [lookupKey]="myLookupKey">
+  <my-placeholder></my-placeholder>
+</ngx-lazy-view>
+```
+
+once the `LazyModule` is loaded, `<my-placeholder>` will be destroyed
+
+The component also provides a notification once the lazy component is rendered:
+
+`app.component.html`
+```html
+<H1>Lazy Load!</h1>
+<ngx-lazy-view lookupKey="LazyModule" (loaded)="handleLoadedEvent()"></ngx-lazy-view>
+```
+
+## Caveats
+- Still have to include `@angular/router` in the app bundle.
+- JiT is broken (for now)
+- Adding new router paths like: `'/ngx-lazy-view-LOOKUPKEY'` (not that I anticipate many people trying to route to this..)
+
+## Advanced
+
+- TODO: Document `NgxLazyViewService`
+- TODO: Update website with example
+- TODO: Fix JiT Compilation (right now it only works with `@angular/cli` and AoT compilation)
 
 ## License
 
