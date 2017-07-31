@@ -7,15 +7,41 @@
 [![devDependency Status](https://david-dm.org/josephliccini/ngx-lazy-view/dev-status.svg?branch=master)](https://david-dm.org/josephliccini/ngx-lazy-view#info=devDependencies)
 [![Greenkeeper Badge](https://badges.greenkeeper.io/josephliccini/ngx-lazy-view.svg)](https://greenkeeper.io/)
 
+# Use at your own risk! 
+### This is not stable and the API may go through many changes
+
+## Motivation
+https://github.com/angular/angular/issues/18093
+
+Basically, there are times we don't wont to include every NgModule in our bundle, but it isn't a routed view.
+
+One example would be a 'Feedback' widget.
+
+This is not something that is required and mission critical for a page, so it can load later.  However, in the current lazy loading mechanism, we would have to specify a route, and that doesn't really make too much sense.
+
+Credits to [Toxicable](https://github.com/Toxicable) for figuring it out!
+
 ## Demo
 
+(Demo not available yet)
 View it in action at https://josephliccini.github.io/ngx-lazy-view
 
+One can clone this repo, and run:
+`yarn`
+`yarn run start`
+`cd dist`
+`yarn link`
+`cd ../demo`
+`yarn`
+`node_modules/.bin/ng serve --aot`
+
+to run the demo locally
+
 ## Dependencies
-* [Angular](https://angular.io) (*requires* Angular 4 or higher, tested with 4.1.3)
+* [Angular](https://angular.io) (*requires* Angular 4 or higher, tested with 4.3.2)
 
 ## Installation
-Install above dependencies via *npm*. 
+Install above dependencies via *npm*.  (not available on NPM yet)
 
 Now install `ngx-lazy-view` via:
 ```shell
@@ -125,11 +151,15 @@ export class AppModule {
 
 *the values for the `path` field are _very_ important.*
 
-The `path` _must_ start with `ngx-lazy-view-`, otherwise at runtime, it won't be able to find your lazy routes.
+The `path` _must_ start with `${NGX_LAZY_VIEW_PATH_PREFIX}`, otherwise at runtime, it won't be able to find your lazy routes.
 
 the value for `LOOKUPKEY` and `LOOKUPKEY2` can be anything you like, though I have a preference for:
+
+```js
 `LOOKUPKEY`: `LazyModule`,
 `LOOKUPKEY2`: `AnotherLazyModule`
+```
+
 but you can use anything you like.
 
 the next step is to go into `LazyModule`, and add an 'entry point'.
@@ -197,15 +227,19 @@ The component also provides a notification once the lazy component is rendered:
 ## Caveats
 - Still have to include `@angular/router` in the app bundle.
 - JiT is broken (for now)
-- Adding new router paths like: `'/ngx-lazy-view-LOOKUPKEY'` (not that I anticipate many people trying to route to this..)
+- Use of this approach adds new router paths like: `'/ngx-lazy-view-LOOKUPKEY'` (not that I anticipate many people trying to route to this..)
 
 ## Advanced
+TBD (document using service)
 
+## TODO
+- Create an NPM Package and publish
 - TODO: Document `NgxLazyViewService`
-- TODO: Update website with example
+- TODO: Update website with example (josephliccini.github.io does not exist)
 - TODO: Fix JiT Compilation (right now it only works with `@angular/cli` and AoT compilation)
 - TODO: figure out a way to sync inputs and outputs of the lazy components
 - TODO: What if a lazy component could provide more routes?
+- TODO: OnPush Change Detection? (not tested)
 
 ## License
 
