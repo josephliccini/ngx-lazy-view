@@ -1,33 +1,33 @@
 import { provideRoutes } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NgModuleFactoryLoader, SystemJsNgModuleLoader } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppRoutingModule } from './app-routing';
 import { AppSharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { GettingStartedComponent } from './getting-started/getting-started.component';
 
 import { NgxLazyViewModule, NGX_LAZY_VIEW_PATH_PREFIX } from 'ngx-lazy-view';
 
 @NgModule({
     declarations: [
         AppComponent,
-        GettingStartedComponent,
         HomeComponent
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
-        AppRoutingModule,
         AppSharedModule,
         NgxLazyViewModule.forRoot()
     ],
     providers: [
+        { provide: NgModuleFactoryLoader, useClass: SystemJsNgModuleLoader }, // if using RouterModule.forRoot(...), you do NOT need to do this.
+        // Define your ngx-lazy-view-modules.
+        // format: path: `${NGX_LAZY_VIEW_PATH_PREFIX}LOOKUPKEY`
+        // the LookupKeys can be anything you like.
         provideRoutes([
             { 
                 path: `${NGX_LAZY_VIEW_PATH_PREFIX}LazyModule1`, 
